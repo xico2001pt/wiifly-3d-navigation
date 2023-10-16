@@ -5,33 +5,33 @@ namespace WiiFly.Cursor {
     public class CursorController : MonoBehaviour {
         #region Fields
         [SerializeField] private CanvasScaler canvasScaler;
-        [SerializeField] private CursorData cursorData;
-        
+
         private RectTransform _cursorRectTransform;
+        private CursorData _cursorData;
         #endregion
 
         #region Unity Methods
         protected void Awake() {
             _cursorRectTransform = GetComponent<RectTransform>();
+            _cursorData = new CursorData();
         }
         
         protected void Start() {
-            UpdateTransform();
-        }
-        
-        protected void Update() {  // TODO: Remove this method, after implementing the Wiimote update method
             UpdateTransform();
         }
         #endregion
         
         #region Public Methods
         public Vector2 GetCursorPosition() {
-            return cursorData.position;
+            return _cursorData.Position;
         }
         
+        // TODO: Get Cursor intensity
+        
         public void SetCursorData(float x, float y) {
-            cursorData.position.x = x;
-            cursorData.position.y = y;
+            _cursorData.Position.x = x;
+            _cursorData.Position.y = y;
+            // TODO: Set Cursor intensity
             UpdateTransform();
         }
         #endregion
@@ -39,8 +39,8 @@ namespace WiiFly.Cursor {
         #region Private Methods
         private void UpdateTransform() {
             _cursorRectTransform.anchoredPosition = new Vector2(
-                cursorData.position.x * canvasScaler.referenceResolution.x,
-                -cursorData.position.y * canvasScaler.referenceResolution.y  // Negative, because the y-axis is inverted
+                _cursorData.Position.x * canvasScaler.referenceResolution.x,
+                -_cursorData.Position.y * canvasScaler.referenceResolution.y  // Negative, because the y-axis is inverted
             );
         }
         #endregion
