@@ -22,7 +22,7 @@ namespace WiiFly.Camera
             Vector2 cursorPosition = _cursorController.GetCursorPosition();
 
             float angularSpeedX = (cursorPosition.x - 0.5f) * maxAngularSpeed; 
-            float angularSpeedY = (cursorPosition.y - 0.5f) * maxAngularSpeed;
+            float angularSpeedY = (0.5f - cursorPosition.y) * maxAngularSpeed;
 
             float rotationX = transform.rotation.eulerAngles.x - angularSpeedY * Time.deltaTime;
             float rotationY = transform.rotation.eulerAngles.y + angularSpeedX * Time.deltaTime;
