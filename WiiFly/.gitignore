@@ -26,6 +26,7 @@
 # IDEs cache directory
 .vs/
 .idea/
+.vsconfig
 
 # Gradle cache directory
 .gradle/
