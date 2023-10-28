@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
@@ -36,18 +35,26 @@ namespace WiiFly.GUI {
             UpdateLinePoints(_topLineRenderer, Vector2.up);
             UpdateLinePoints(_bottomLineRenderer, Vector2.down);
             
-            UpdateCirclePoints();
+            UpdateCirclePoints(100);
         }
         #endregion
         
         #region Private Methods
         private void UpdateLinePoints(UILineRenderer lineRenderer, Vector2 direction) {
-            lineRenderer.Points[0] = new Vector2(0, 0);  // TODO: Subtract radius
+            lineRenderer.Points[0] = Vector2.zero + direction * circleRadius;
             lineRenderer.Points[1] = direction * canvasScaler.referenceResolution / 2;
             lineRenderer.SetAllDirty();
         }
         
-        private void UpdateCirclePoints() {
+        private void UpdateCirclePoints(int steps) {
+            _circleLineRenderer.Points = new Vector2[steps + 1];
+            for (int i = 0; i <= steps; ++i) {
+                float angle = i * Mathf.PI * 2 / steps;
+                _circleLineRenderer.Points[i] = new Vector2(
+                    Mathf.Cos(angle) * circleRadius,
+                    Mathf.Sin(angle) * circleRadius
+                );
+            }
         }
         #endregion
     }
