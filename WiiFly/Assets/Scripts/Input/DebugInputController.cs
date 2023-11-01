@@ -7,8 +7,9 @@ namespace WiiFly.Input {
         [SerializeField] private CursorController cursorController;
         [SerializeField, Range(0, 1)] private float cursorX = 0.5f;
         [SerializeField, Range(0, 1)] private float cursorY = 0.5f;
+        [SerializeField, Range(0, 1)] private float intensity = 0.5f;
         #endregion
-        
+
         #region Unity Methods
         private void Start() {
             UpdateCursorData();
@@ -23,6 +24,7 @@ namespace WiiFly.Input {
         #region Private Methods
         private void UpdateCursorData() {
             cursorController.SetCursorData(cursorX, cursorY);
+            cursorController.setCursorIntensity(intensity);
         }
         #endregion
     }
