@@ -39,6 +39,12 @@ namespace WiiFly.GUI {
         }
         #endregion
         
+        #region Public Methods
+        public Vector2 GetDeadZoneRatio() {
+            return new Vector2(circleRadius / canvasScaler.referenceResolution.x, circleRadius / canvasScaler.referenceResolution.y);
+        }
+        #endregion
+        
         #region Private Methods
         private void UpdateLinePoints(UILineRenderer lineRenderer, Vector2 direction) {
             lineRenderer.Points[0] = Vector2.zero + direction * circleRadius;
