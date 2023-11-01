@@ -10,12 +10,16 @@ namespace WiiFly.Camera
         [SerializeField] private float maxLinearSpeed = 25f;
 
         private CursorController _cursorController;
+        private VelocityBarController _velocityBarController;
         #endregion
 
         #region Unity Methods
         protected void Awake()
         {
             _cursorController = FindObjectOfType<CursorController>();
+            _velocityBarController = FindObjectOfType<VelocityBarController>();
+            _velocityBarController.SetMaxSpeed(maxLinearSpeed);
+            _velocityBarController.SetMinSpeed(-maxLinearSpeed);
         }
 
         private void LateUpdate()
@@ -32,6 +36,8 @@ namespace WiiFly.Camera
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
 
             float linearSpeed = CalculateLinearSpeed(intensity);
+
+            _velocityBarController.SetSpeed(linearSpeed);
 
             transform.position += linearSpeed * Time.deltaTime * transform.forward;
         }
