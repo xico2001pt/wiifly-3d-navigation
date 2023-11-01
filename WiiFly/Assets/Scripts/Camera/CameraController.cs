@@ -7,6 +7,9 @@ namespace WiiFly.Camera
     {
         #region Fields
         [SerializeField] private float maxAngularSpeed = 90f;
+        [SerializeField] private float maxLinearSpeed = 25f;
+        [SerializeField] private float middleDistance = 5f;
+        [SerializeField, Range(1, 10)] private float distance = 5.0f;
 
         private CursorController _cursorController;
         #endregion
@@ -28,7 +31,30 @@ namespace WiiFly.Camera
             float rotationY = transform.rotation.eulerAngles.y + angularSpeedX * Time.deltaTime;
 
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
+
+            float linearSpeed = CalculateLinearSpeed(distance);
+
+            transform.position += linearSpeed * Time.deltaTime * transform.forward;
         }
         #endregion
+
+        private float CalculateLinearSpeed(float distance)
+        {
+            float linearSpeed;
+            if (distance == middleDistance)
+            {
+                linearSpeed = 0f;
+            }
+            else if (distance < middleDistance)
+            {
+                linearSpeed = maxLinearSpeed / distance;
+            }
+            else
+            {
+                linearSpeed = -maxLinearSpeed / (11 - distance);
+            }
+
+            return linearSpeed;
+        }
     }
 }
