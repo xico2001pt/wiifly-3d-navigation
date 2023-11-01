@@ -1,15 +1,19 @@
 using UnityEngine;
 using WiiFly.Cursor;
+using WiiFly.GUI;
 
 namespace WiiFly.Camera
 {
     public class CameraController : MonoBehaviour
     {
         #region Fields
+        [SerializeField] private RotationGridController rotationGridController;
         [SerializeField] private float maxAngularSpeed = 90f;
         [SerializeField] private float maxLinearSpeed = 25f;
+        [SerializeField, Range(0, 1)] private float deadZoneIntensityRange = 0.1f;
 
         private CursorController _cursorController;
+        private Vector2 _deadZonePositionRange;
         private VelocityBarController _velocityBarController;
         #endregion
 
@@ -17,6 +21,7 @@ namespace WiiFly.Camera
         protected void Awake()
         {
             _cursorController = FindObjectOfType<CursorController>();
+            _deadZonePositionRange = rotationGridController.GetDeadZoneRatio() * 2f;
             _velocityBarController = FindObjectOfType<VelocityBarController>();
             _velocityBarController.SetMaxSpeed(maxLinearSpeed);
             _velocityBarController.SetMinSpeed(-maxLinearSpeed);
@@ -27,11 +32,10 @@ namespace WiiFly.Camera
             Vector2 cursorPosition = _cursorController.GetCursorPosition();
             float intensity = _cursorController.GetCursorIntensity();
 
-            float angularSpeedX = (cursorPosition.x - 0.5f) * maxAngularSpeed; 
-            float angularSpeedY = (cursorPosition.y - 0.5f) * maxAngularSpeed;
+            Vector2 angularSpeed = CalculateAngularSpeed(cursorPosition);
 
-            float rotationX = transform.rotation.eulerAngles.x + angularSpeedY * Time.deltaTime;
-            float rotationY = transform.rotation.eulerAngles.y + angularSpeedX * Time.deltaTime;
+            float rotationX = transform.rotation.eulerAngles.x + angularSpeed.y * Time.deltaTime;
+            float rotationY = transform.rotation.eulerAngles.y + angularSpeed.x * Time.deltaTime;
 
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
 
@@ -43,10 +47,33 @@ namespace WiiFly.Camera
         }
         #endregion
 
-        private float CalculateLinearSpeed(float intensity)
-        {
-            float linearSpeed = maxLinearSpeed * (intensity - 0.5f) * 2f;
-            return linearSpeed;
+        #region Private Methods
+        private float CalculateLinearSpeed(float intensity) {
+            // Process dead zone
+            intensity = NormalizeDeadZonedValue(intensity, deadZoneIntensityRange);
+
+            // Calculate linear speed
+            return maxLinearSpeed * intensity;
         }
+        
+        private Vector2 CalculateAngularSpeed(Vector2 cursorPosition) {
+            // Process dead zone
+            cursorPosition.x = NormalizeDeadZonedValue(cursorPosition.x, _deadZonePositionRange.x);
+            cursorPosition.y = NormalizeDeadZonedValue(cursorPosition.y, _deadZonePositionRange.y);
+            
+            // Calculate angular speed
+            float angularSpeedX = maxAngularSpeed * cursorPosition.x;
+            float angularSpeedY = maxAngularSpeed * cursorPosition.y;
+
+            return new Vector2(angularSpeedX, angularSpeedY);
+        }
+
+        private float NormalizeDeadZonedValue(float value, float deadZoneRatio) {
+            if (Mathf.Abs(value) < deadZoneRatio) {
+                return 0;
+            }
+            return Mathf.Max(Mathf.Abs(value) - deadZoneRatio, 0) / (1f - deadZoneRatio) * Mathf.Sign(value);
+        }
+        #endregion
     }
 }
