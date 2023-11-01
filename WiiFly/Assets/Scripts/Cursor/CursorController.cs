@@ -26,13 +26,20 @@ namespace WiiFly.Cursor {
             return _cursorData.Position;
         }
         
-        // TODO: Get Cursor intensity
+        public float GetCursorIntensity()
+        {
+            return _cursorData.intensity;
+        }
         
         public void SetCursorData(float x, float y) {
             _cursorData.Position.x = x;
             _cursorData.Position.y = y;
-            // TODO: Set Cursor intensity
             UpdateTransform();
+        }
+
+        public void setCursorIntensity(float intensity)
+        {
+            _cursorData.intensity = intensity;
         }
         #endregion
 

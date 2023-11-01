@@ -6,6 +6,6 @@ namespace WiiFly.Cursor {
          * The y position ranges from 0 to 1, where 0 is the top of the screen and 1 is the bottom.
          */
         public Vector2 Position;
-        // TODO: Intensity
+        public float intensity;
     }
 }
