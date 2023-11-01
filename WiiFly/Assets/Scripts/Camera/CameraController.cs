@@ -12,14 +12,14 @@ namespace WiiFly.Camera
         [SerializeField] private float maxLinearSpeed = 25f;
 
         private CursorController _cursorController;
-        private Vector2 _deadZoneRatio;
+        private Vector2 _deadZoneRange;
         #endregion
 
         #region Unity Methods
         protected void Awake()
         {
             _cursorController = FindObjectOfType<CursorController>();
-            _deadZoneRatio = rotationGridController.GetDeadZoneRatio();
+            _deadZoneRange = rotationGridController.GetDeadZoneRatio() * 2f;
         }
 
         private void LateUpdate()
@@ -27,7 +27,7 @@ namespace WiiFly.Camera
             Vector2 cursorPosition = _cursorController.GetCursorPosition();
             float intensity = _cursorController.GetCursorIntensity();
 
-            Vector2 angularSpeed = GetAngularSpeed(cursorPosition);
+            Vector2 angularSpeed = CalculateAngularSpeed(cursorPosition);
 
             float rotationX = transform.rotation.eulerAngles.x + angularSpeed.y * Time.deltaTime;
             float rotationY = transform.rotation.eulerAngles.y + angularSpeed.x * Time.deltaTime;
@@ -42,28 +42,27 @@ namespace WiiFly.Camera
 
         #region Private Methods
         private float CalculateLinearSpeed(float intensity) {
-            float linearSpeed = maxLinearSpeed * (intensity - 0.5f) * 2f;
+            float linearSpeed = maxLinearSpeed * intensity;
             return linearSpeed;
         }
         
-        private Vector2 GetAngularSpeed(Vector2 cursorPosition) {
-            // Change origin to zero
-            Vector2 normalizedCursorPosition = cursorPosition - new Vector2(0.5f, 0.5f);
-            
+        private Vector2 CalculateAngularSpeed(Vector2 cursorPosition) {
             // Process dead zone
-            if (Mathf.Abs(normalizedCursorPosition.x) < _deadZoneRatio.x) {
-                normalizedCursorPosition.x = 0;
+            if (Mathf.Abs(cursorPosition.x) < _deadZoneRange.x) {
+                cursorPosition.x = 0;
             }
-            if (Mathf.Abs(normalizedCursorPosition.y) < _deadZoneRatio.y) {
-                normalizedCursorPosition.y = 0;
+            if (Mathf.Abs(cursorPosition.y) < _deadZoneRange.y) {
+                cursorPosition.y = 0;
             }
-            
-            // Change scale to [-1, 1]
-            normalizedCursorPosition *= 2f;
 
-            // Calculate angular velocity
-            float angularSpeedX = normalizedCursorPosition.x * maxAngularSpeed;
-            float angularSpeedY = normalizedCursorPosition.y * maxAngularSpeed;
+            // Normalize the slope
+            // TODO: Check if this can be simplified
+            cursorPosition.x = Mathf.Max(Mathf.Abs(cursorPosition.x) - _deadZoneRange.x, 0) / (1f - _deadZoneRange.x) * Mathf.Sign(cursorPosition.x);
+            cursorPosition.y = Mathf.Max(Mathf.Abs(cursorPosition.y) - _deadZoneRange.y, 0) / (1f - _deadZoneRange.y) * Mathf.Sign(cursorPosition.y);
+            
+            // Calculate angular speed
+            float angularSpeedX = maxAngularSpeed * cursorPosition.x;
+            float angularSpeedY = maxAngularSpeed * cursorPosition.y;
 
             return new Vector2(angularSpeedX, angularSpeedY);
         }

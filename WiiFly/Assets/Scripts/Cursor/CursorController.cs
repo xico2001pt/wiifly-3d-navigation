@@ -28,7 +28,7 @@ namespace WiiFly.Cursor {
         
         public float GetCursorIntensity()
         {
-            return _cursorData.intensity;
+            return _cursorData.Intensity;
         }
         
         public void SetCursorData(float x, float y) {
@@ -37,18 +37,19 @@ namespace WiiFly.Cursor {
             UpdateTransform();
         }
 
-        public void setCursorIntensity(float intensity)
+        public void SetCursorIntensity(float intensity)
         {
-            _cursorData.intensity = intensity;
+            _cursorData.Intensity = intensity;
         }
         #endregion
 
         #region Private Methods
-        private void UpdateTransform() {
-            _cursorRectTransform.anchoredPosition = new Vector2(
-                _cursorData.Position.x * canvasScaler.referenceResolution.x,
-                -_cursorData.Position.y * canvasScaler.referenceResolution.y  // Negative, because the y-axis is inverted
-            );
+        private void UpdateTransform()
+        {
+            _cursorRectTransform.anchoredPosition =
+                _cursorData.GetNormalizedPosition() *
+                canvasScaler.referenceResolution *
+                new Vector2(1, -1);  // Y is negative because the y-axis is inverted
         }
         #endregion
     }
