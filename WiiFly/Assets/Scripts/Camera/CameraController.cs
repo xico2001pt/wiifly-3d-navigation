@@ -30,10 +30,12 @@ namespace WiiFly.Camera
 
             Vector2 angularSpeed = CalculateAngularSpeed(cursorPosition);
 
-            float rotationX = transform.rotation.eulerAngles.x + angularSpeed.y * Time.deltaTime;
-            float rotationY = transform.rotation.eulerAngles.y + angularSpeed.x * Time.deltaTime;
+            float rotationX = angularSpeed.y * Time.deltaTime;
+            float rotationY = angularSpeed.x * Time.deltaTime;
+            rotationX = Mathf.Clamp(rotationX, -90f, 90f); // Not doing anything??
 
-            transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
+            transform.Rotate(Vector3.right, rotationX, Space.Self);
+            transform.Rotate(Vector3.up, rotationY, Space.World);
 
             float linearSpeed = CalculateLinearSpeed(intensity);
 
