@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using WiiFly.Cursor;
 using WiiFly.GUI;
