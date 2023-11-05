@@ -21,6 +21,13 @@ public class VelocityBarController : MonoBehaviour
 
     public void SetSpeed(float speed) { 
         slider.value = speed; 
-        fill.color = gradient.Evaluate(slider.normalizedValue);
+        if (speed == 0)
+        {
+            fill.color = Color.clear;
+        }
+        else
+        {
+            fill.color = gradient.Evaluate(slider.normalizedValue);
+        }
     }
 }
