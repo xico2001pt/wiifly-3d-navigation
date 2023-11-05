@@ -23,8 +23,8 @@ namespace WiiFly.Camera
             _cursorController = FindObjectOfType<CursorController>();
             _deadZonePositionRange = rotationGridController.GetDeadZoneRatio() * 2f;
             _velocityBarController = FindObjectOfType<VelocityBarController>();
-            _velocityBarController.SetMaxSpeed(maxLinearSpeed);
-            _velocityBarController.SetMinSpeed(-maxLinearSpeed);
+            _velocityBarController.SetMaxIntensity(1f);
+            _velocityBarController.SetMinIntensity(-1f);
         }
 
         private void LateUpdate()
@@ -39,9 +39,8 @@ namespace WiiFly.Camera
 
             transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
 
+            _velocityBarController.SetIntensity(intensity);
             float linearSpeed = CalculateLinearSpeed(intensity);
-
-            _velocityBarController.SetSpeed(linearSpeed);
 
             transform.position += linearSpeed * Time.deltaTime * transform.forward;
         }
