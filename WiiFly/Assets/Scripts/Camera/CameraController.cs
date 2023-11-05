@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using WiiFly.Cursor;
 using WiiFly.GUI;
@@ -14,13 +15,17 @@ namespace WiiFly.Camera
 
         private CursorController _cursorController;
         private Vector2 _deadZonePositionRange;
+        private Vector3 _cameraRotationEuler;
         #endregion
 
         #region Unity Methods
-        protected void Awake()
-        {
+        protected void Awake() {
             _cursorController = FindObjectOfType<CursorController>();
             _deadZonePositionRange = rotationGridController.GetDeadZoneRatio() * 2f;
+        }
+
+        protected void Start() {
+            _cameraRotationEuler = transform.rotation.eulerAngles;
         }
 
         private void LateUpdate()
@@ -30,13 +35,13 @@ namespace WiiFly.Camera
 
             Vector2 angularSpeed = CalculateAngularSpeed(cursorPosition);
 
-            float rotationX = angularSpeed.y * Time.deltaTime;
-            float rotationY = angularSpeed.x * Time.deltaTime;
-            rotationX = Mathf.Clamp(rotationX, -90f, 90f); // Not doing anything??
-
-            transform.Rotate(Vector3.right, rotationX, Space.Self);
-            transform.Rotate(Vector3.up, rotationY, Space.World);
-
+            _cameraRotationEuler.x += angularSpeed.y * Time.deltaTime;
+            _cameraRotationEuler.y += angularSpeed.x * Time.deltaTime;
+            
+            _cameraRotationEuler.x = Mathf.Clamp(_cameraRotationEuler.x, -90f, 90f);
+            
+            transform.rotation = Quaternion.Euler(_cameraRotationEuler.x, _cameraRotationEuler.y, _cameraRotationEuler.z);
+            
             float linearSpeed = CalculateLinearSpeed(intensity);
 
             transform.position += linearSpeed * Time.deltaTime * transform.forward;
