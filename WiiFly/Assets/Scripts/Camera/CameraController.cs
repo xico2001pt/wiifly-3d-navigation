@@ -15,16 +15,12 @@ namespace WiiFly.Camera
         private CursorController _cursorController;
         private Vector2 _deadZonePositionRange;
         private Vector3 _cameraRotationEuler;
-        private VelocityBarController _velocityBarController;
         #endregion
 
         #region Unity Methods
         protected void Awake() {
             _cursorController = FindObjectOfType<CursorController>();
             _deadZonePositionRange = rotationGridController.GetDeadZoneRatio() * 2f;
-            _velocityBarController = FindObjectOfType<VelocityBarController>();
-            _velocityBarController.SetMaxIntensity(1f);
-            _velocityBarController.SetMinIntensity(-1f);
         }
 
         protected void Start() {
@@ -45,7 +41,6 @@ namespace WiiFly.Camera
             
             transform.rotation = Quaternion.Euler(_cameraRotationEuler.x, _cameraRotationEuler.y, _cameraRotationEuler.z);
 
-            _velocityBarController.SetIntensity(intensity);
             float linearSpeed = CalculateLinearSpeed(intensity);
 
             transform.position += linearSpeed * Time.deltaTime * transform.forward;
