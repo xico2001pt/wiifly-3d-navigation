@@ -40,7 +40,7 @@ namespace WiiFly.Camera
             _cameraRotationEuler.x = Mathf.Clamp(_cameraRotationEuler.x, -90f, 90f);
             
             transform.rotation = Quaternion.Euler(_cameraRotationEuler.x, _cameraRotationEuler.y, _cameraRotationEuler.z);
-            
+
             float linearSpeed = CalculateLinearSpeed(intensity);
 
             transform.position += linearSpeed * Time.deltaTime * transform.forward;
