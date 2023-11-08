@@ -9,6 +9,7 @@ namespace WiiFly.Input {
         #region Fields
         [SerializeField] private CursorController cursorController;
         [SerializeField] private float interpolationSpeed = 5f;
+        [SerializeField] private float barZoom = 1.2f;
         
         private Wiimote _wiimote;
         private float _xPosition, _yPosition;
@@ -46,15 +47,32 @@ namespace WiiFly.Input {
         
         #region Private Methods
         private void UpdateCursorPosition() {
-            var irp = _wiimote.Ir.GetIRMidpoint(true);
+            var irp = _wiimote.Ir.GetIRMidpoint();
             if (irp[0] > 0 && irp[1] > 0) {
-                _targetXPosition = Mathf.Clamp(-(irp[0] * 2 - 1), -1f, 1f);
-                _targetYPosition = Mathf.Clamp(irp[1] * 2 - 1, -1f, 1f);
+                // Convert to [-1, 1] range
+                _targetXPosition = -(irp[0] * 2 - 1);
+                _targetYPosition = irp[1] * 2 - 1;
                 
-                _xPosition = Mathf.Lerp(_xPosition, _targetXPosition, interpolationSpeed * Time.deltaTime);
-                _yPosition = Mathf.Lerp(_yPosition, _targetYPosition, interpolationSpeed * Time.deltaTime);
-                cursorController.SetCursorData(_xPosition, _yPosition);
+                // Apply virtual bar zoom
+                _targetXPosition = ApplyBarZoom(_targetXPosition);
+                _targetYPosition = ApplyBarZoom(_targetYPosition);
+                
+                // Clamp to [-1, 1] range
+                _targetXPosition = Mathf.Clamp(_targetXPosition, -1f, 1f);
+                _targetYPosition = Mathf.Clamp(_targetYPosition, -1f, 1f);
             }
+            
+            _xPosition = InterpolateCursorValue(_xPosition, _targetXPosition);
+            _yPosition = InterpolateCursorValue(_yPosition, _targetYPosition);
+            cursorController.SetCursorData(_xPosition, _yPosition);
+        }
+        
+        private float InterpolateCursorValue(float currentValue, float targetValue) {
+            return Mathf.Lerp(currentValue, targetValue, interpolationSpeed * Time.deltaTime);
+        }
+        
+        private float ApplyBarZoom(float value) {
+            return value * barZoom;
         }
         #endregion
     }
