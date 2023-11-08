@@ -68,6 +68,9 @@ namespace WiiFly.Input {
                 // Clamp to [-1, 1] range
                 _targetXPosition = Mathf.Clamp(_targetXPosition, -1f, 1f);
                 _targetYPosition = Mathf.Clamp(_targetYPosition, -1f, 1f);
+            } else {
+                _targetXPosition = 0f;
+                _targetYPosition = 0f;
             }
             
             _xPosition = InterpolateCursorValue(_xPosition, _targetXPosition);
