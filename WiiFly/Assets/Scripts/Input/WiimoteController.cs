@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using WiiFly.Cursor;
 using WiimoteApi;
 
@@ -8,12 +9,18 @@ namespace WiiFly.Input {
     public class WiimoteController : MonoBehaviour {
         #region Fields
         [SerializeField] private CursorController cursorController;
-        [SerializeField] private float interpolationSpeed = 5f;
+        [SerializeField] private float positionInterpolationSpeed = 5f;
         [SerializeField] private float barZoom = 1.2f;
+        [SerializeField] private float neutralLinearSpeed = 40f;
+        [SerializeField] private float linearSpeedRange = 10f;
+        [SerializeField] private float intensityInterpolationSpeed = 5f;
         
         private Wiimote _wiimote;
         private float _xPosition, _yPosition;
         private float _targetXPosition, _targetYPosition;
+        
+        private float _linearSpeed;
+        private float _targetLinearSpeed;
         #endregion
 
         #region Unity Methods
@@ -39,6 +46,7 @@ namespace WiiFly.Input {
                     ret = _wiimote.ReadWiimoteData();
                     if (ret > 0) {
                         UpdateCursorPosition();
+                        UpdateCursorIntensity();
                     }
                 } while (ret > 0);
             }
@@ -68,11 +76,45 @@ namespace WiiFly.Input {
         }
         
         private float InterpolateCursorValue(float currentValue, float targetValue) {
-            return Mathf.Lerp(currentValue, targetValue, interpolationSpeed * Time.deltaTime);
+            return Mathf.Lerp(currentValue, targetValue, positionInterpolationSpeed * Time.deltaTime);
+        }
+        
+        private float InterpolateCursorIntensity(float currentValue, float targetValue) {
+            return Mathf.Lerp(currentValue, targetValue, intensityInterpolationSpeed * Time.deltaTime);
         }
         
         private float ApplyBarZoom(float value) {
             return value * barZoom;
+        }
+        
+        private void UpdateCursorIntensity() {
+            float intensity = GetAveragePointsIntensity();
+            if (intensity > -1) {
+                _targetLinearSpeed = Mathf.Clamp(intensity, neutralLinearSpeed - linearSpeedRange, neutralLinearSpeed + linearSpeedRange);
+            } else {  // Stop if not detected
+                _targetLinearSpeed = neutralLinearSpeed;
+            }
+            _linearSpeed = InterpolateCursorIntensity(_linearSpeed, _targetLinearSpeed);
+            
+            intensity = CursorData.GetNormalizedValue(_linearSpeed, neutralLinearSpeed - linearSpeedRange, neutralLinearSpeed + linearSpeedRange);
+            intensity = intensity * 2 - 1;
+            cursorController.SetCursorIntensity(intensity);
+        }
+        
+        private float GetAveragePointsIntensity() {
+            float sum = 0f;
+            int count = 0;
+            for (int i = 0; i < 4; ++i) {
+                int value = _wiimote.Ir.ir[i, 7];
+                if (value > -1) {
+                    sum += value;
+                    ++count;
+                }
+            }
+
+            if (count == 0)
+                return -1;
+            return sum / count;
         }
         #endregion
     }
