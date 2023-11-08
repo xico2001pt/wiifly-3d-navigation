@@ -92,16 +92,17 @@ namespace WiiFly.Input {
         
         private void UpdateCursorIntensity() {
             float intensity = GetAveragePointsIntensity();
+            Debug.Log(intensity);
             if (intensity > -1) {
                 _targetLinearSpeed = Mathf.Clamp(intensity, neutralLinearSpeed - linearSpeedRange, neutralLinearSpeed + linearSpeedRange);
+                _targetLinearSpeed = CursorData.GetNormalizedValue(_targetLinearSpeed, neutralLinearSpeed - linearSpeedRange, neutralLinearSpeed + linearSpeedRange);
+                _targetLinearSpeed = _targetLinearSpeed * 2 - 1;
             } else {  // Stop if not detected
-                _targetLinearSpeed = neutralLinearSpeed;
+                _targetLinearSpeed = 0;
             }
             _linearSpeed = InterpolateCursorIntensity(_linearSpeed, _targetLinearSpeed);
             
-            intensity = CursorData.GetNormalizedValue(_linearSpeed, neutralLinearSpeed - linearSpeedRange, neutralLinearSpeed + linearSpeedRange);
-            intensity = intensity * 2 - 1;
-            cursorController.SetCursorIntensity(intensity);
+            cursorController.SetCursorIntensity(_linearSpeed);
         }
         
         private float GetAveragePointsIntensity() {
