@@ -90,7 +90,7 @@ namespace WiimoteApi
             int ymin = data[4];
             int xmax = data[5];
             int ymax = data[6];
-            int inten = data[7];
+            int inten = data[8];
 
             return new int[] { x, y, size, xmin, ymin, xmax, ymax, inten };
         }

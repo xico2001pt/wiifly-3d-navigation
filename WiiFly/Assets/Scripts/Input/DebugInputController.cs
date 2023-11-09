@@ -5,9 +5,9 @@ namespace WiiFly.Input {
     public class DebugInputController : MonoBehaviour {
         #region Fields
         [SerializeField] private CursorController cursorController;
-        [SerializeField, Range(0, 1)] private float cursorX = 0.5f;
-        [SerializeField, Range(0, 1)] private float cursorY = 0.5f;
-        [SerializeField, Range(0, 1)] private float intensity = 0.5f;
+        [SerializeField, Range(-1, 1)] private float cursorX;
+        [SerializeField, Range(-1, 1)] private float cursorY;
+        [SerializeField, Range(-1, 1)] private float intensity;
         #endregion
 
         #region Unity Methods
@@ -24,7 +24,7 @@ namespace WiiFly.Input {
         #region Private Methods
         private void UpdateCursorData() {
             cursorController.SetCursorData(cursorX, cursorY);
-            cursorController.setCursorIntensity(intensity);
+            cursorController.SetCursorIntensity(intensity);
         }
         #endregion
     }
