@@ -7,13 +7,15 @@ using TMPro;
 namespace WiiFly.GUI {
     public class ModeWidgetController : MonoBehaviour {
         #region Fields
+        [SerializeField] private Sprite flyModeSprite;
+        [SerializeField] private Sprite orbitModeSprite;
+        
         private TMP_Text _text;
         private Image _image;
         #endregion
 
         #region Unity Methods
-        protected void Awake()
-        {
+        protected void Awake() {
             _text = GetComponentInChildren<TMP_Text>();
             Image[] images = GetComponentsInChildren<Image>();
             _image = images[1];
@@ -21,16 +23,17 @@ namespace WiiFly.GUI {
         #endregion
 
         #region Private Methods
-        private void ChangeToOrbitMode()
-        {
-            _text.text = "Orbit Mode";
-            _image.sprite = Resources.Load<Sprite>("Sprites/orbit");
+        private void ChangeToOrbitMode() {
+            SetMode("Orbit", orbitModeSprite);
         }
 
-        private void ChangeToFlyMode()
-        {
-            _text.text = "Fly Mode";
-            _image.sprite = Resources.Load<Sprite>("Sprites/fly");
+        private void ChangeToFlyMode() {
+            SetMode("Fly", flyModeSprite);
+        }
+        
+        private void SetMode(string mode, Sprite sprite) {
+            _text.text = mode + " Mode";
+            _image.sprite = sprite;
         }
         #endregion
     }
