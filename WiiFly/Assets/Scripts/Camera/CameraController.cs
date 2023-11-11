@@ -1,11 +1,15 @@
+using System;
 using UnityEngine;
 using WiiFly.Camera.Mode;
 using WiiFly.Cursor;
 using WiiFly.GUI;
 
-namespace WiiFly.Camera
-{
+namespace WiiFly.Camera {
     public class CameraController : MonoBehaviour {
+        #region Events
+        public event EventHandler<string> OnUpdateCameraMode; 
+        #endregion
+        
         #region Fields
         private static readonly ICameraMode[] CameraModes = {
             new FlyMode(),
@@ -55,6 +59,7 @@ namespace WiiFly.Camera
         private void SetCameraMode(int index) {
             _cameraMode = CameraModes[index];
             _cameraMode.Initialize(_camera);
+            OnUpdateCameraMode?.Invoke(this, _cameraMode.GetModeName());
         }
         
         private float NormalizeDeadZonedValue(float value, float deadZoneRatio) {
