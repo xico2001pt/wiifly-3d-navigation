@@ -13,7 +13,7 @@ namespace WiiFly.Camera {
         #region Fields
         private static readonly ICameraMode[] CameraModes = {
             new FlyMode(),
-            //new OrbitMode()
+            new OrbitMode()
         };
         
         [SerializeField] private RotationGridController rotationGridController;
