@@ -4,7 +4,7 @@ using UnityEngine;
 namespace WiiFly.Camera.Mode {
     public class FlyMode : ICameraMode {
         #region Fields
-        private float _maxAngularSpeed = 90f;
+        private float _maxAngularSpeed = 90f;  // TODO: Singleton class should host parameters like this
         private float _maxLinearSpeed = 25f;
         
         private Transform _cameraTransform;
