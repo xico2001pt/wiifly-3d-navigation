@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using WiiFly.Camera.Mode;
 using WiiFly.Cursor;
@@ -11,10 +13,7 @@ namespace WiiFly.Camera {
         #endregion
         
         #region Fields
-        private static readonly ICameraMode[] CameraModes = {
-            new FlyMode(),
-            new OrbitMode()
-        };
+        [SerializeReference] private List<ICameraMode> _cameraModes;
         
         [SerializeField] private RotationGridController rotationGridController;
         [SerializeField, Range(0, 1)] private float deadZoneIntensityRange = 0.1f;
@@ -55,9 +54,15 @@ namespace WiiFly.Camera {
         }
         #endregion
 
+        #region Public Methods
+        public void AddMode(ICameraMode mode) {
+            _cameraModes.Add(mode);
+        }
+        #endregion
+
         #region Private Methods
         private void SetCameraMode(int index) {
-            _cameraMode = CameraModes[index];
+            _cameraMode = _cameraModes[index];
             _cameraMode.Initialize(_camera);
             OnUpdateCameraMode?.Invoke(this, _cameraMode.GetModeName());
         }

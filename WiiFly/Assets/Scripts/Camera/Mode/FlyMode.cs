@@ -1,15 +1,21 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace WiiFly.Camera.Mode {
+    [Serializable]
     public class FlyMode : ICameraMode {
         #region Fields
-        private float _maxAngularSpeed = 90f;  // TODO: Singleton class should host parameters like this
-        private float _maxLinearSpeed = 25f;
+        [SerializeField] private float maxAngularSpeed = 90f;
+        [SerializeField] private float maxLinearSpeed = 25f;
         
         private Transform _cameraTransform;
         private Vector3 _cameraRotationEuler;
         #endregion
+        
+        public FlyMode() {
+            _cameraRotationEuler = Vector3.zero;
+        }
         
         #region Public Methods
         public void Initialize(UnityEngine.Camera camera) {
@@ -30,8 +36,8 @@ namespace WiiFly.Camera.Mode {
         #region Private Methods
         private void UpdateCameraRotation(Vector2 cursorPosition) {
             // Calculate angular speed
-            float angularSpeedX = _maxAngularSpeed * cursorPosition.x;
-            float angularSpeedY = _maxAngularSpeed * cursorPosition.y;
+            float angularSpeedX = maxAngularSpeed * cursorPosition.x;
+            float angularSpeedY = maxAngularSpeed * cursorPosition.y;
             
             // Update local data of camera rotation
             _cameraRotationEuler.x += angularSpeedY * Time.deltaTime;
@@ -46,7 +52,7 @@ namespace WiiFly.Camera.Mode {
 
         private void UpdateCameraPosition(float intensity) {
             // Calculate linear speed
-            float linearSpeed = _maxLinearSpeed * intensity;
+            float linearSpeed = maxLinearSpeed * intensity;
 
             // Update camera position
             _cameraTransform.position += linearSpeed * Time.deltaTime * _cameraTransform.forward;
