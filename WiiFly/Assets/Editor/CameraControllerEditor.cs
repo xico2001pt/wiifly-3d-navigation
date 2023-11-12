@@ -9,7 +9,7 @@ using WiiFly.Camera.Mode;
 namespace WiiFly.Editor {
     [CustomEditor(typeof(CameraController))]
     public class CameraControllerEditor : SelectImplementationEditor<CameraController, ICameraMode> {
-        #region Unity
+        #region Unity Methods
         protected void Awake() {
             this.Initialize("_cameraModes", "Camera Modes", true);
         }
@@ -29,6 +29,13 @@ namespace WiiFly.Editor {
                 list.index = -1;
             };
         }
+
+        public override void OnInspectorGUI() {
+            DrawPropertiesExcluding(serializedObject, "_cameraModes");
+            serializedObject.ApplyModifiedProperties();
+            base.OnInspectorGUI();
+        }
+
         #endregion
 
         #region Initialization
