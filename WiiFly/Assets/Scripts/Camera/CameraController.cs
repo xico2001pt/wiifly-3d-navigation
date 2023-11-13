@@ -12,7 +12,7 @@ namespace WiiFly.Camera {
         #endregion
         
         #region Fields
-        [SerializeReference] private List<ICameraMode> _cameraModes;
+        [SerializeReference] private List<ICameraMode> _cameraModes = new List<ICameraMode>();
         
         [SerializeField] private RotationGridController rotationGridController;
         [SerializeField, Range(0, 1)] private float deadZoneIntensityRange = 0.1f;
