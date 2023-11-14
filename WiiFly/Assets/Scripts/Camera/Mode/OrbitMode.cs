@@ -19,8 +19,11 @@ namespace WiiFly.Camera.Mode {
             RaycastHit hit;
             if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out hit, Mathf.Infinity))
             {
-                Debug.DrawRay(_cameraTransform.position, _cameraTransform.forward * hit.distance, Color.yellow);
-                Debug.Log(hit.point);
+                Debug.DrawRay(_cameraTransform.position, _cameraTransform.forward * hit.distance, Color.red);
+                Debug.Log("start + dir: " + _cameraTransform.position + _cameraTransform.forward * hit.distance);
+                Debug.Log("point: " + hit.point);
+                Debug.Log("Hit object: " + hit.collider.gameObject.name);
+                _targetPosition = hit.point;
             }
         }
         
