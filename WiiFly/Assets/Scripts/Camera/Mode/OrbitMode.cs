@@ -7,6 +7,7 @@ namespace WiiFly.Camera.Mode {
         #region Fields
         [SerializeField] private float maxAngularSpeed = 90f;
         [SerializeField] private float maxLinearSpeed = 25f;
+        [SerializeField] private float minDistance = 0.3f;
         
         private Transform _cameraTransform;
         private Vector3 _targetPosition;
@@ -61,7 +62,12 @@ namespace WiiFly.Camera.Mode {
             _cameraTransform.RotateAround(_targetPosition, _cameraTransform.right, -rotationAngleY);
 
             // Move forward/backward
-            _cameraTransform.position += maxLinearSpeed * intensity * Time.deltaTime * _cameraTransform.forward;
+            float linearDistance = maxLinearSpeed * intensity * Time.deltaTime;
+            float distanceToTarget = Vector3.Distance(_cameraTransform.position, _targetPosition);
+            if (linearDistance > 0) {
+                linearDistance = Mathf.Min(linearDistance, distanceToTarget - minDistance);
+            }
+            _cameraTransform.position += linearDistance * _cameraTransform.forward;
         }
         
         public string GetModeName() {
