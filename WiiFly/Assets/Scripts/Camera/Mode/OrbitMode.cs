@@ -15,13 +15,7 @@ namespace WiiFly.Camera.Mode {
         #region Public Methods
         public void Initialize(UnityEngine.Camera camera) {
             _cameraTransform = camera.transform;
-            RaycastHit hit;
-            if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out hit, Mathf.Infinity))
-            {
-                Debug.DrawRay(_cameraTransform.position, _cameraTransform.forward * hit.distance, Color.red);
-                Debug.Log("start + dir: " + _cameraTransform.position + _cameraTransform.forward * hit.distance);
-                Debug.Log("point: " + hit.point);
-                Debug.Log("Hit object: " + hit.collider.gameObject.name);
+            if (RaycastFromCamera(camera, out RaycastHit hit)) {
                 _targetPosition = hit.point;
             }
             // TODO: ADD TARGET CUBE TO SCENE
@@ -31,15 +25,25 @@ namespace WiiFly.Camera.Mode {
         // TODO: REMOVE TARGET CUBE TO SCENE
         }
 
-        public void Update(Vector2 cursorPosition, float intensity) {}
+        public void Update(Vector2 cursorPosition, float intensity) {
+            _cameraTransform.RotateAround(_targetPosition, Vector3.up, maxAngularSpeed * cursorPosition.x * Time.deltaTime);
+            _cameraTransform.RotateAround(_targetPosition, _cameraTransform.right, maxAngularSpeed * cursorPosition.y * Time.deltaTime);
+            _cameraTransform.position += maxLinearSpeed * intensity * Time.deltaTime * _cameraTransform.forward;
+        }
         
         public string GetModeName() {
             return "Orbit";
         }
 
         public bool CanInitialize(UnityEngine.Camera camera) {
-            // TODO: CHECK IF RAYCAST HITS ANYTHING
-            return true;
+            return RaycastFromCamera(camera, out RaycastHit _);
+        }
+        #endregion
+        
+        #region Private Methods
+        private bool RaycastFromCamera(UnityEngine.Camera camera, out RaycastHit hit) {
+            Transform cameraTransform = camera.transform;
+            return Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit);
         }
         #endregion
     }
