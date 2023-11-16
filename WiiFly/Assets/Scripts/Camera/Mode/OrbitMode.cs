@@ -26,8 +26,8 @@ namespace WiiFly.Camera.Mode {
         }
 
         public void Update(Vector2 cursorPosition, float intensity) {
-            _cameraTransform.RotateAround(_targetPosition, Vector3.up, maxAngularSpeed * cursorPosition.x * Time.deltaTime);
-            _cameraTransform.RotateAround(_targetPosition, _cameraTransform.right, maxAngularSpeed * cursorPosition.y * Time.deltaTime);
+            _cameraTransform.RotateAround(_targetPosition, Vector3.up, -maxAngularSpeed * cursorPosition.x * Time.deltaTime);
+            _cameraTransform.RotateAround(_targetPosition, _cameraTransform.right, -maxAngularSpeed * cursorPosition.y * Time.deltaTime);
             _cameraTransform.position += maxLinearSpeed * intensity * Time.deltaTime * _cameraTransform.forward;
         }
         
