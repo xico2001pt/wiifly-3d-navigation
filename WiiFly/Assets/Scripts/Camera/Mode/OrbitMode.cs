@@ -26,8 +26,41 @@ namespace WiiFly.Camera.Mode {
         }
 
         public void Update(Vector2 cursorPosition, float intensity) {
-            _cameraTransform.RotateAround(_targetPosition, Vector3.up, -maxAngularSpeed * cursorPosition.x * Time.deltaTime);
-            _cameraTransform.RotateAround(_targetPosition, _cameraTransform.right, -maxAngularSpeed * cursorPosition.y * Time.deltaTime);
+            // Calculate rotation angle
+            float rotationAngleX = maxAngularSpeed * cursorPosition.x * Time.deltaTime;
+            float rotationAngleY = maxAngularSpeed * cursorPosition.y * Time.deltaTime;
+            
+            // Rotate horizontally around target
+            _cameraTransform.RotateAround(_targetPosition, Vector3.up, -rotationAngleX);
+            
+            // Get distance of vertical rotation to -90 or 90 degrees
+            float rotationAngleYSign = Mathf.Sign(rotationAngleY);
+            float verticalRotationDistance = 90f;
+            float cameraRotationX = _cameraTransform.rotation.eulerAngles.x;
+            float maxAngle = 89.8f;
+            float minAngle = 270.8f;
+            if (rotationAngleYSign < 0) {
+                if (cameraRotationX < 90f) {  // Top side
+                    verticalRotationDistance = maxAngle - cameraRotationX;
+                } else {  // Bottom side
+                    verticalRotationDistance = 360f - cameraRotationX + maxAngle;
+                }
+            } else {
+                if (cameraRotationX > 270f) {  // Bottom side
+                    verticalRotationDistance = cameraRotationX - minAngle;
+                } else {  // Top side
+                    verticalRotationDistance = 90f + cameraRotationX;
+                }
+            }
+
+            // Clamp vertical rotation
+            verticalRotationDistance = Mathf.Max(0f, verticalRotationDistance);
+            rotationAngleY = Mathf.Min(verticalRotationDistance, Mathf.Abs(rotationAngleY)) * rotationAngleYSign;
+            
+            // Rotate vertically around target
+            _cameraTransform.RotateAround(_targetPosition, _cameraTransform.right, -rotationAngleY);
+
+            // Move forward/backward
             _cameraTransform.position += maxLinearSpeed * intensity * Time.deltaTime * _cameraTransform.forward;
         }
         
@@ -44,6 +77,13 @@ namespace WiiFly.Camera.Mode {
         private bool RaycastFromCamera(UnityEngine.Camera camera, out RaycastHit hit) {
             Transform cameraTransform = camera.transform;
             return Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit);
+        }
+        
+        private Vector3 RotateAround(Vector3 point, Vector3 pivot, Vector3 axis, float angle) {
+            Vector3 direction = point - pivot;  // Get direction vector
+            direction = Quaternion.AngleAxis(angle, axis) * direction;  // Rotate point
+            point = direction + pivot;  // Calculate rotated point
+            return point;  // Return it
         }
         #endregion
     }
