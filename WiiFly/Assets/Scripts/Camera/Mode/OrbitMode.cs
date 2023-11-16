@@ -15,7 +15,6 @@ namespace WiiFly.Camera.Mode {
         #region Public Methods
         public void Initialize(UnityEngine.Camera camera) {
             _cameraTransform = camera.transform;
-            // TODO: Target position should be the target point of a raycast in the center of the screen
             RaycastHit hit;
             if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out hit, Mathf.Infinity))
             {
@@ -25,12 +24,22 @@ namespace WiiFly.Camera.Mode {
                 Debug.Log("Hit object: " + hit.collider.gameObject.name);
                 _targetPosition = hit.point;
             }
+            // TODO: ADD TARGET CUBE TO SCENE
         }
-        
+
+        public void Deinitialize() {
+        // TODO: REMOVE TARGET CUBE TO SCENE
+        }
+
         public void Update(Vector2 cursorPosition, float intensity) {}
         
         public string GetModeName() {
             return "Orbit";
+        }
+
+        public bool CanInitialize(UnityEngine.Camera camera) {
+            // TODO: CHECK IF RAYCAST HITS ANYTHING
+            return true;
         }
         #endregion
     }
