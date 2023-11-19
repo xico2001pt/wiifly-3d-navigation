@@ -61,9 +61,15 @@ namespace WiiFly.Camera {
 
         #region Private Methods
         private void SetCameraMode(int index) {
-            _cameraMode = _cameraModes[index];
-            _cameraMode.Initialize(_camera);
-            OnUpdateCameraMode?.Invoke(this, _cameraMode.GetModeName());
+            ICameraMode mode = _cameraModes[index];
+            if (mode.CanInitialize(_camera)) {
+                _cameraMode?.Denitialize();
+                _cameraMode = mode;
+                _cameraMode.Initialize(_camera);
+                OnUpdateCameraMode?.Invoke(this, _cameraMode.GetModeName());
+            } else {
+                Debug.LogWarning($"Cannot initialize camera mode {mode.GetModeName()}");
+            }
         }
         
         private float NormalizeDeadZonedValue(float value, float deadZoneRatio) {

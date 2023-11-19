@@ -12,11 +12,7 @@ namespace WiiFly.Camera.Mode {
         private Transform _cameraTransform;
         private Vector3 _cameraRotationEuler;
         #endregion
-        
-        public FlyMode() {
-            _cameraRotationEuler = Vector3.zero;
-        }
-        
+
         #region Public Methods
         public void Initialize(UnityEngine.Camera camera) {
             _cameraTransform = camera.transform;
@@ -47,7 +43,7 @@ namespace WiiFly.Camera.Mode {
             _cameraRotationEuler.x = Mathf.Clamp(_cameraRotationEuler.x, -90f, 90f);
             
             // Update camera rotation
-            _cameraTransform.rotation = Quaternion.Euler(_cameraRotationEuler.x, _cameraRotationEuler.y, _cameraRotationEuler.z);
+            _cameraTransform.rotation = Quaternion.Euler(_cameraRotationEuler);
         }
 
         private void UpdateCameraPosition(float intensity) {
