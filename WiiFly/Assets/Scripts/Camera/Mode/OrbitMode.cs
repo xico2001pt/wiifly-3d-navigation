@@ -11,19 +11,26 @@ namespace WiiFly.Camera.Mode {
         
         private Transform _cameraTransform;
         private Vector3 _targetPosition;
+        private GameObject targetCube;
         #endregion
-        
+
         #region Public Methods
         public void Initialize(UnityEngine.Camera camera) {
             _cameraTransform = camera.transform;
             if (RaycastFromCamera(camera, out RaycastHit hit)) {
                 _targetPosition = hit.point;
+                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                cube.transform.position = _targetPosition;
+                cube.GetComponent<Renderer>().material.color = Color.red;
+                cube.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             }
-            // TODO: ADD TARGET CUBE TO SCENE
         }
 
         public void Deinitialize() {
-        // TODO: REMOVE TARGET CUBE TO SCENE
+            if (targetCube != null)
+            {
+                GameObject.Destroy(targetCube);
+            }
         }
 
         public void Update(Vector2 cursorPosition, float intensity) {
