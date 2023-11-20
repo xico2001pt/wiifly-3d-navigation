@@ -58,15 +58,14 @@ namespace WiiFly.Editor {
                 EditorGUI.LabelField(rect, this.caption, EditorStyles.boldLabel);
             };
             this.reorderableList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) => {
-                if (listProperty.isExpanded) {
-                    EditorGUI.indentLevel = 1;
-                    SerializedProperty property = listProperty.GetArrayElementAtIndex(index);
-                    EditorGUI.PropertyField(rect, property, new GUIContent(property.managedReferenceFullTypename.Split('.').Last()), true);
-                }
+                
+                EditorGUI.indentLevel = 1;
+                SerializedProperty property = listProperty.GetArrayElementAtIndex(index);
+                EditorGUI.PropertyField(rect, property, new GUIContent(property.managedReferenceFullTypename.Split('.').Last()), true);
             };
             this.reorderableList.elementHeightCallback = (int index) => {
                 SerializedProperty property = listProperty.GetArrayElementAtIndex(index);
-                return property.isExpanded ? this.reorderableList.elementHeight * property.CountInProperty()  : EditorGUIUtility.singleLineHeight;
+                return this.reorderableList.elementHeight * property.CountInProperty();
             };
         }
 
