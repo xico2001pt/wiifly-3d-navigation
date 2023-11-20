@@ -18,6 +18,7 @@ namespace WiiFly.Camera.Mode {
             _cameraTransform = camera.transform;
             _cameraRotationEuler = _cameraTransform.rotation.eulerAngles;
             _cameraRotationEuler.x = NormalizeXAngle(_cameraRotationEuler.x);
+            _cameraRotationEuler.z = 0f;
             Debug.Log(_cameraRotationEuler);
         }
 
