@@ -18,6 +18,7 @@ namespace WiiFly.Input {
         [SerializeField] private float intensityInterpolationSpeed = 5f;
         
         private Wiimote _wiimote;
+        private bool _previousAButtonState;
         private float _xPosition, _yPosition;
         private float _targetXPosition, _targetYPosition;
         
@@ -49,11 +50,17 @@ namespace WiiFly.Input {
                     if (ret > 0) {
                         UpdateCursorPosition();
                         UpdateCursorIntensity();
-                        if (_wiimote.Button.a) {
-                            cameraController.SwitchCameraMode();
-                        }
                     }
                 } while (ret > 0);
+                
+                if (_wiimote.Button.a) {
+                    if (!_previousAButtonState) {
+                        cameraController.SwitchCameraMode();
+                    }
+                    _previousAButtonState = true;
+                } else {
+                    _previousAButtonState = false;
+                }
             }
         }
         #endregion
