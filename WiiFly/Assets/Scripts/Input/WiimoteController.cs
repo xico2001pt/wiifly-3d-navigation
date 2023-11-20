@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using WiiFly.Camera;
 using WiiFly.Cursor;
 using WiimoteApi;
 
 namespace WiiFly.Input {
     public class WiimoteController : MonoBehaviour {
         #region Fields
+        [SerializeField] private CameraController cameraController;
         [SerializeField] private CursorController cursorController;
         [SerializeField] private float positionInterpolationSpeed = 5f;
         [SerializeField] private float barZoom = 1.2f;

@@ -54,6 +54,12 @@ namespace WiiFly.Camera {
         #endregion
 
         #region Public Methods
+
+        public void SwitchCameraMode() {
+            int index = _cameraModes.IndexOf(_cameraMode);
+            index = (index + 1) % _cameraModes.Count;
+            SetCameraMode(index);
+        }
         public void AddMode(ICameraMode mode) {
             _cameraModes.Add(mode);
         }
