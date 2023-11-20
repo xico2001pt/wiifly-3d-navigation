@@ -17,6 +17,8 @@ namespace WiiFly.Camera.Mode {
         public void Initialize(UnityEngine.Camera camera) {
             _cameraTransform = camera.transform;
             _cameraRotationEuler = _cameraTransform.rotation.eulerAngles;
+            _cameraRotationEuler.x = NormalizeXAngle(_cameraRotationEuler.x);
+            Debug.Log(_cameraRotationEuler);
         }
 
         public void Update(Vector2 cursorPosition, float intensity) {
@@ -52,6 +54,16 @@ namespace WiiFly.Camera.Mode {
 
             // Update camera position
             _cameraTransform.position += linearSpeed * Time.deltaTime * _cameraTransform.forward;
+        }
+        
+        private float NormalizeXAngle(float angle) {
+            if (angle > 180f) {
+                return angle - 360f;
+            } else if (angle < -180f) {
+                return angle + 360f;
+            } else {
+                return angle;
+            }
         }
         #endregion
     }
