@@ -8,7 +8,7 @@ namespace WiiFly.Camera.Mode {
         public string GetModeName();
         
         // Optional methods
-        public void Denitialize() {}
+        public void Deinitialize() {}
         public bool CanInitialize(UnityEngine.Camera camera) { return true; }
     }
 }

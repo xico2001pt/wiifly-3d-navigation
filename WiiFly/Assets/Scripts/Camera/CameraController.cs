@@ -69,7 +69,7 @@ namespace WiiFly.Camera {
         private void SetCameraMode(int index) {
             ICameraMode mode = _cameraModes[index];
             if (mode.CanInitialize(_camera)) {
-                _cameraMode?.Denitialize();
+                _cameraMode?.Deinitialize();
                 _cameraMode = mode;
                 _cameraMode.Initialize(_camera);
                 OnUpdateCameraMode?.Invoke(this, _cameraMode.GetModeName());
