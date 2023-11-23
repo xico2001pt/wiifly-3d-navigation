@@ -1,9 +1,11 @@
 using UnityEngine;
+using WiiFly.Camera;
 using WiiFly.Cursor;
 
 namespace WiiFly.Input {
     public class DebugInputController : MonoBehaviour {
         #region Fields
+        [SerializeField] private CameraController cameraController;
         [SerializeField] private CursorController cursorController;
         [SerializeField, Range(-1, 1)] private float cursorX;
         [SerializeField, Range(-1, 1)] private float cursorY;
@@ -17,6 +19,10 @@ namespace WiiFly.Input {
 
         private void Update() {
             UpdateCursorData();
+            
+            if (UnityEngine.Input.GetKeyDown(KeyCode.Space)) {
+                cameraController.SwitchCameraMode();
+            }
         }
 
         #endregion

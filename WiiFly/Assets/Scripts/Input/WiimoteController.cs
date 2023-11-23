@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using WiiFly.Camera;
 using WiiFly.Cursor;
 using WiimoteApi;
 
 namespace WiiFly.Input {
     public class WiimoteController : MonoBehaviour {
         #region Fields
+        [SerializeField] private CameraController cameraController;
         [SerializeField] private CursorController cursorController;
         [SerializeField] private float positionInterpolationSpeed = 5f;
         [SerializeField] private float barZoom = 1.2f;
@@ -16,6 +18,7 @@ namespace WiiFly.Input {
         [SerializeField] private float intensityInterpolationSpeed = 5f;
         
         private Wiimote _wiimote;
+        private bool _previousAButtonState;
         private float _xPosition, _yPosition;
         private float _targetXPosition, _targetYPosition;
         
@@ -49,6 +52,15 @@ namespace WiiFly.Input {
                         UpdateCursorIntensity();
                     }
                 } while (ret > 0);
+                
+                if (_wiimote.Button.a) {
+                    if (!_previousAButtonState) {
+                        cameraController.SwitchCameraMode();
+                    }
+                    _previousAButtonState = true;
+                } else {
+                    _previousAButtonState = false;
+                }
             }
         }
         #endregion
@@ -92,7 +104,6 @@ namespace WiiFly.Input {
         
         private void UpdateCursorIntensity() {
             float intensity = GetAveragePointsIntensity();
-            Debug.Log(intensity);
             if (intensity > -1) {
                 _targetLinearSpeed = Mathf.Clamp(intensity, neutralLinearSpeed - linearSpeedRange, neutralLinearSpeed + linearSpeedRange);
                 _targetLinearSpeed = CursorData.GetNormalizedValue(_targetLinearSpeed, neutralLinearSpeed - linearSpeedRange, neutralLinearSpeed + linearSpeedRange);
