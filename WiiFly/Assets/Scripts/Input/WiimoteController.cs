@@ -104,7 +104,6 @@ namespace WiiFly.Input {
         
         private void UpdateCursorIntensity() {
             float intensity = GetAveragePointsIntensity();
-            Debug.Log(intensity);
             if (intensity > -1) {
                 _targetLinearSpeed = Mathf.Clamp(intensity, neutralLinearSpeed - linearSpeedRange, neutralLinearSpeed + linearSpeedRange);
                 _targetLinearSpeed = CursorData.GetNormalizedValue(_targetLinearSpeed, neutralLinearSpeed - linearSpeedRange, neutralLinearSpeed + linearSpeedRange);
