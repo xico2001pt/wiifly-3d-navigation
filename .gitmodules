@@ -1,3 +1,3 @@
-[submodule "WiiFly/Assests/TAIM-Tests-Shared"]
+[submodule "WiiFly/Assets/TAIM-Tests-Shared"]
 	path = WiiFly/Assets/TAIM-Tests-Shared
 	url = https://github.com/luismrguimaraes/TAIM-Tests-Shared.git
