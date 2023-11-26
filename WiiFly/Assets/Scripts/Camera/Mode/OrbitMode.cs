@@ -5,7 +5,8 @@ namespace WiiFly.Camera.Mode {
     [Serializable]
     public class OrbitMode : ICameraMode {
         #region Fields
-        [SerializeField] private float maxAngularSpeed = 90f;
+        [SerializeField] private float maxHorizontalAngularSpeed = 90f;
+        [SerializeField] private float maxVerticalAngularSpeed = 45f;
         [SerializeField] private float maxLinearSpeed = 25f;
         [SerializeField] private float minDistance = 0.3f;
         
@@ -32,8 +33,8 @@ namespace WiiFly.Camera.Mode {
 
         public void Update(Vector2 cursorPosition, float intensity) {
             // Calculate rotation angle
-            float rotationAngleX = maxAngularSpeed * cursorPosition.x * Time.deltaTime;
-            float rotationAngleY = maxAngularSpeed * cursorPosition.y * Time.deltaTime;
+            float rotationAngleX = maxHorizontalAngularSpeed * cursorPosition.x * Time.deltaTime;
+            float rotationAngleY = maxVerticalAngularSpeed * cursorPosition.y * Time.deltaTime;
             
             // Rotate horizontally around target
             _cameraTransform.RotateAround(_targetPosition, Vector3.up, -rotationAngleX);
