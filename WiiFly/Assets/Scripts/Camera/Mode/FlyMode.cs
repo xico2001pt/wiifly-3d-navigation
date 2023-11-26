@@ -6,7 +6,8 @@ namespace WiiFly.Camera.Mode {
     [Serializable]
     public class FlyMode : ICameraMode {
         #region Fields
-        [SerializeField] private float maxAngularSpeed = 90f;
+        [SerializeField] private float maxHorizontalAngularSpeed = 90f;
+        [SerializeField] private float maxVerticalAngularSpeed = 45f;
         [SerializeField] private float maxLinearSpeed = 25f;
         
         private Transform _cameraTransform;
@@ -35,8 +36,8 @@ namespace WiiFly.Camera.Mode {
         #region Private Methods
         private void UpdateCameraRotation(Vector2 cursorPosition) {
             // Calculate angular speed
-            float angularSpeedX = maxAngularSpeed * cursorPosition.x;
-            float angularSpeedY = maxAngularSpeed * cursorPosition.y;
+            float angularSpeedX = maxHorizontalAngularSpeed * cursorPosition.x;
+            float angularSpeedY = maxVerticalAngularSpeed * cursorPosition.y;
             
             // Update local data of camera rotation
             _cameraRotationEuler.x += angularSpeedY * Time.deltaTime;
