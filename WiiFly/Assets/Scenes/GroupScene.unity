@@ -328,16 +328,16 @@ MonoBehaviour:
     - rid: 7851188735380291584
       type: {class: FlyMode, ns: WiiFly.Camera.Mode, asm: Assembly-CSharp}
       data:
-        maxHorizontalAngularSpeed: 90
-        maxVerticalAngularSpeed: 45
-        maxLinearSpeed: 25
+        maxHorizontalAngularSpeed: 50
+        maxVerticalAngularSpeed: 30
+        maxLinearSpeed: 7
     - rid: 7851188735380291585
       type: {class: OrbitMode, ns: WiiFly.Camera.Mode, asm: Assembly-CSharp}
       data:
-        maxHorizontalAngularSpeed: 90
-        maxVerticalAngularSpeed: 45
-        maxLinearSpeed: 25
-        minDistance: 0.3
+        maxHorizontalAngularSpeed: 50
+        maxVerticalAngularSpeed: 30
+        maxLinearSpeed: 7
+        minDistance: 0.5
 --- !u!81 &212472609
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1592,11 +1592,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraController: {fileID: 212472608}
   cursorController: {fileID: 439387090}
-  positionInterpolationSpeed: 4.5
+  positionInterpolationSpeed: 4.6
   barZoom: 1.2
-  neutralLinearSpeed: 39
-  linearSpeedRange: 28
-  intensityInterpolationSpeed: 3
+  neutralLinearSpeed: 35
+  linearSpeedRange: 15
+  intensityInterpolationSpeed: 2.5
 --- !u!114 &1779973799
 MonoBehaviour:
   m_ObjectHideFlags: 0
