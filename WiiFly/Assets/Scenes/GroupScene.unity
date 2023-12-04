@@ -1594,8 +1594,8 @@ MonoBehaviour:
   cursorController: {fileID: 439387090}
   positionInterpolationSpeed: 4.6
   barZoom: 1.2
-  neutralLinearSpeed: 35
-  linearSpeedRange: 15
+  neutralLinearSpeed: 41
+  linearSpeedRange: 13.5
   intensityInterpolationSpeed: 2.5
 --- !u!114 &1779973799
 MonoBehaviour:
