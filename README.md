@@ -14,9 +14,8 @@ Our work involves an innovative extension of the Wii remote functionalities, tra
   - [Installation](#installation)
   - [Usage](#usage)
 - [Controls](#controls)
-- [Game Flow](#game-flow)
-- [Implementation Details](#implementation-details)
-- [Contributing](#contributing)
+- [Project Structure](#project-structure)
+- [Acknowledgements](#acknowledgements)
 
 ## License
 
@@ -52,6 +51,8 @@ Regarding software, the WiiFly system relies on the follow-
 ing elements:
 - **Wiimote API**: The Unity Wii Remote API enables integration of the Wii remote capabilities within the Unity environment, establishing a communication channel between the Wii remote and the Unity application.
 - **WiiPair**: The software application facilitates Bluetooth connection setup between the Wii remote and a computer. The Bluetooth link between the Wii remote is set up via the WiiPair software, sending an authentication token to maintain the connection.
+
+## Getting Started
 
 ### Installation
 
