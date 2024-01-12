@@ -4,6 +4,8 @@ Our work involves an innovative extension of the Wii remote functionalities, tra
 
 ![WiiFly Preview](Images/WiiFlyPreview.jpg)
 
+https://github.com/xico2001pt/wiifly-3d-navigation/assets/57841600/60bbbc83-2ff1-4c84-bb94-27d4b45d204e
+
 ## Table of Contents
 
 - [License](#license)
@@ -21,7 +23,7 @@ Our work involves an innovative extension of the Wii remote functionalities, tra
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Please **ACKNOWLEDGE THE AUTHOR** if you use this project in your own work. You can do this by including a link to this repository and the authors' GitHub profiles.
+Please **ACKNOWLEDGE THE AUTHORS** if you use this project in your own work. You can do this by including a link to this repository and the authors' GitHub profiles.
 
 ## Features
 
@@ -39,16 +41,14 @@ This approach was designed in accordance with a specific set of features:
 
 The hardware of the WiiFly system comprises the following
 components:
-- **Wii remote (Wiimote)**: Input device controlling the WiiFly system. Equipped with gyroscope, accelerometer, an infrared cam-
-era, and various buttons.
+- **Wii remote (Wiimote)**: Input device controlling the WiiFly system. Equipped with a gyroscope, accelerometer, an infrared camera, and various buttons.
 - **Sensor bar**: Specifically the Xahpower
 USB Sensor Bar, with a total of six LEDs – three
 on each side – it emits infrared (IR) light that allows the
 Wii remote’s IR camera to determine the cursor’s position
 precisely.
 
-Regarding software, the WiiFly system relies on the follow-
-ing elements:
+Regarding software, the WiiFly system relies on the following elements:
 - **Wiimote API**: The Unity Wii Remote API enables integration of the Wii remote capabilities within the Unity environment, establishing a communication channel between the Wii remote and the Unity application.
 - **WiiPair**: The software application facilitates Bluetooth connection setup between the Wii remote and a computer. The Bluetooth link between the Wii remote is set up via the WiiPair software, sending an authentication token to maintain the connection.
 
@@ -60,7 +60,7 @@ Clone the repository and open the project in Unity (version 2022.3.11f1).
 
 ### Usage
 
-1. Turn the Bluetooth on your computer on.
+1. Turn on the Bluetooth on your computer.
 2. Open the WiiPair application and press the 1 and 2 buttons simultaneously on the Wii remote.
 3. Wait for the Wii remote to connect to your computer.
 4. Open the WiiFly project in Unity.
@@ -68,7 +68,7 @@ Clone the repository and open the project in Unity (version 2022.3.11f1).
 
 ## Controls
 
-The WiiFly system is controlled by the Wii remote. The cursor’s position is determined by the IR camera, controlling the camera's angular speed. The distance between the sensor bar and the remote is used to determine the camera's linear speed.
+The WiiFly system is controlled by the Wii remote. The cursor’s position is determined by the IR camera, controlling the camera's angular speed. The distance between the sensor bar and the remote determines the camera's linear speed.
 
 ## Project Structure
 
